@@ -144,12 +144,13 @@ export class ProductService {
       );
     }
 
-    let stockState = 0;
-    if (stock.stock - product.stock < this.MIN_STOCK) {
+    let stockState = product.stock;
+    if (stockState - stock.stock < this.MIN_STOCK) {
       stockState = this.MIN_STOCK;
     } else {
-      stockState = stock.stock - product.stock;
+      stockState -= stock.stock;
     }
+
     const rows: UpdateResult = await this.productRepository.update(
       { id: stock.id },
       { stock: stockState },
